@@ -11,9 +11,6 @@ localip=
 
 get_config()
 {
-        config_get_bool enable $1 enable
-        [ "$enable" = 1 ] || return 0
-
         interface=`uci get minivtun.@minivtun[0].interface 2>/dev/null`
         remoteip=`uci get minivtun.@minivtun[0].remote`
         password=`uci get minivtun.@minivtun[0].password 2>/dev/null`
@@ -24,7 +21,7 @@ start()
         get_config
 
         if [ -z "$remoteip" -o -z "$localip" ]; then
-                echo "minivtun is not start yet. Check your ip or enable"
+                echo "Not start yet. Check your ip or enable"
                 return 1
         fi
 
@@ -35,21 +32,21 @@ start()
 
 boot()
 {
-    if [ ! -c "/dev/net/tun" ]; then
-        mkdir -p /dev/net
-        mknod /dev/net/tun c 10 200
-        chmod 0666 /dev/net/tun
-    fi
+        if [ ! -c "/dev/net/tun" ]; then
+                mkdir -p /dev/net
+                mknod /dev/net/tun c 10 200
+                chmod 0666 /dev/net/tun
+        fi
 
-        get_config
+        local enable=`uci get minivtun.@minivtun[0].enable`
+        [ "$enable" = "1" ] || return 0
 
         start
 }
 
 stop()
 {
-        get_config
-
+        interface=`uci get minivtun.@minivtun[0].interface 2>/dev/null`
         if [ -f /var/run/minivtun_$interface.pid ]; then
                 kill -9 `cat /var/run/minivtun_$interface.pid`
                 if [ $? = "0" ]; then
@@ -67,4 +64,3 @@ restart()
         stop
         start
 }
-
