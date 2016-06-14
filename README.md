@@ -8,31 +8,49 @@ This repo is an unoffical openwrt-dist, if you prefer the offical one, please vi
 
 The way default route and init.d files was inspired by [openwrt-shadowvpn](https://github.com/aa65535/openwrt-shadowvpn).
 
-### 依赖包
+### For Linux
 
-	libopenssl
-	ip
-	kmod-tun
+Show you the Offical guide below
 
+Install devel libs
 
-### 编译
+	# ubuntu
+	sudo apt-get install build-essential libssl-dev
+	# CentOS
+	sudo yum install make gcc openssl-devel
 
-	# 以 ar71xx 平台为例
+Compile and install
+
+    git clone https://github.com/rssnsj/minivtun.git minivtun
+    cd minivtun/src
+    make
+    sudo make install
+	
+### For Openwrt
+
+	# ar71xx platform
 	tar xjf OpenWrt-SDK-ar71xx-for-linux-x86_64-gcc-4.8-linaro_uClibc-0.9.33.2.tar.bz2
 	cd OpenWrt-SDK-ar71xx-*
-	# 获取 Makefile
 	cd openwrt
 	git clone https://github.com/lixingcong/minivtun-openwrt package/minivtun-openwrt
-	# 选择要编译的包 Network -> minivtun
+	# Select Network -> minivtun
 	make menuconfig
-	# 开始编译
 	make package/minivtun/compile V=99
 	
-### 配置
+### Configure
 
-详见[minivtun](https://github.com/rssnsj/minivtun)主页，可以修改config
+Change password or port
 
 	vi /etc/config/minivtun
-	# 总开关 enable=1 表示开启
-	# 填上ip、端口、密码等
+	# Switch: enable = 1 or 0
+
+Restart service
+
 	/etc/init.d/minivtun restart
+	
+See also Offical page [minivtun](https://github.com/rssnsj/minivtun)
+
+
+### License
+
+GPLv3
