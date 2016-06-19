@@ -1,4 +1,3 @@
-
 #!/bin/sh
 
 [ "$ACTION" = ifup ] || exit 0
@@ -8,4 +7,4 @@ device=$(ip route show 0/0 | sed -e 's/.* dev \([^ ]*\).*/\1/')
 [ -z "$device" -o "$DEVICE" = "$device" ] || exit 0
 
 /etc/init.d/minivtun restart
-#logger -t ShadowVPN "Restart ShadowVPN due to ifup of $INTERFACE ($DEVICE)"
+logger -t minivtun "Restart minivtun due to ifup of $INTERFACE ($DEVICE)"

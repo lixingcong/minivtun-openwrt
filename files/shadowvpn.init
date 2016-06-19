@@ -1,0 +1,69 @@
+#!/bin/sh /etc/rc.common
+# A modified script adapt for minivtun
+# 
+# Copyright (C) 2015 OpenWrt-dist
+# Copyright (C) 2015 Jian Chang <aa65535@live.com>
+#
+# This is free software, licensed under the GNU General Public License v3.
+# See /LICENSE for more information.
+#
+
+START=90
+STOP=15
+
+start_vpn() {
+	local enable server port password net mtu keepalive intf
+	config_get_bool enable $1 enable
+	[ "$enable" = 1 ] || return 0
+	config_get server $1 server
+	config_get port $1 port
+	config_get password $1 password
+	config_get net $1 net
+	config_get mtu $1 mtu
+	config_get keepalive $1 keepalive
+	config_get intf $1 intf
+
+	if [ -z "$server" -o -z "$port" -o -z "$net" ]; then
+		echo "Not start yet. Check your ip and port"
+		return 0
+	fi
+	
+	/usr/sbin/minivtun -r "[$server]:$port" -a $net -n $intf -e $password -d -m $mtu -k $keepalive \
+                -p /var/run/minivtun_$intf.pid || return 1
+}
+
+start() {
+	config_load minivtun
+	config_foreach start_vpn minivtun
+}
+
+stop() {
+	interface=`uci get minivtun.@minivtun[0].intf 2>/dev/null`
+	if [ -f /var/run/minivtun_$intf.pid ]; then
+		kill -9 `cat /var/run/minivtun_$interface.pid`
+		if [ $? = "0" ]; then
+				rm  /var/run/minivtun_$interface.pid
+				echo stopped
+				return 0
+		fi
+	fi 
+	echo "stop failed."
+	return 1
+}
+
+boot() {
+	if [ ! -c "/dev/net/tun" ]; then
+		mkdir -p /dev/net
+		mknod /dev/net/tun c 10 200
+		chmod 0666 /dev/net/tun
+	fi
+	until ip route show 0/0 | grep -q "^default"; do
+		sleep 1
+	done
+	start
+}
+
+restart(){
+	stop
+	start
+}
