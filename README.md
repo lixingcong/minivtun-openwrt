@@ -65,7 +65,7 @@ Enjoy it!
 	git clone https://github.com/lixingcong/minivtun-openwrt package/minivtun-openwrt
 	# Select Network -> minivtun
 	make menuconfig
-	make package/minivtun/compile V=99
+	make package/minivtun-openwrt/compile V=99
 	
 ### Configure
 
