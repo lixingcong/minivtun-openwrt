@@ -39,7 +39,7 @@ define Package/minivtun/install
 	$(INSTALL_DIR) $(1)/etc/hotplug.d/iface
 	$(INSTALL_DIR) $(1)/etc/minivtun
 
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/minivtun $(1)/usr/sbin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/local/bin/minivtun $(1)/usr/sbin/
 	$(INSTALL_DATA) ./files/shadowvpn.config $(1)/etc/config/minivtun
 	$(INSTALL_BIN) ./files/shadowvpn.init $(1)/etc/init.d/minivtun
 	$(INSTALL_DATA) ./files/shadowvpn.hotplug $(1)/etc/hotplug.d/iface/30-minivtun
