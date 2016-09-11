@@ -31,19 +31,22 @@ Run and listen(my script copied from shadowvpn, not offical)
 	# modify your listenig port and password, etc
 	cd minivtun/linux-server
 	vi run.sh
-	sh run.sh
+
+	# use bash to run, not sh
+	bash run.sh
 	
-if your want to run as linux-client, do the same as linux-server but under linux-client folders.
+if your want to run as ```linux-client```, do the same as ```linux-server``` but under linux-client folders.
 	
 Enjoy it!
 
-### For Openwrt (Client-side)
+### Complie for Openwrt (Client-side)
 
 	# ar71xx platform
 	tar xjf OpenWrt-SDK-ar71xx-for-linux-x86_64-gcc-4.8-linaro_uClibc-0.9.33.2.tar.bz2
 	cd OpenWrt-SDK-ar71xx-*
 	cd openwrt
 	git clone https://github.com/lixingcong/minivtun-openwrt package/minivtun-openwrt
+
 	# Select Network -> minivtun
 	make menuconfig
 	make package/minivtun-openwrt/compile V=99
