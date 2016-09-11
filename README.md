@@ -8,9 +8,9 @@ This repo is an unoffical port for openwrt, if you prefer the offical one, pleas
 
 The default route and init.d files was copied from [openwrt-shadowvpn](https://github.com/aa65535/openwrt-shadowvpn). I am so lazy!
 
-### For Linux (Server-side)
+### For Linux
 
-Show you the Offical guide below
+Show you the Offical compile guide below
 
 Install devel libs
 
@@ -26,33 +26,14 @@ Compile and install
     make
     sudo make install
 
-Run and listen
+Run and listen(my script copied from shadowvpn, not offical)
 
-	# for ipv4
-	minivtun -l 0.0.0.0:443 -a 10.7.0.1/24 -e password -n mv0 -d
-	# for ipv6
-	minivtun -l [::]:443 -a 10.7.0.1/24 -e password -n mv0 -d
-
-Change Default Route
-
-Download server_up.sh and server_down.sh from this repo
-
-[server_up.sh](https://github.com/lixingcong/minivtun-openwrt/blob/master/files/server_up.sh)
-
-[server_down.sh](https://github.com/lixingcong/minivtun-openwrt/blob/master/files/server_down.sh)
+	# modify your listenig port and password, etc
+	cd minivtun/linux-server
+	vi run.sh
+	sh run.sh
 	
-Then execute the script for enable or disable forwarding traffic.
-
-	# export sys-enviorments, the script need it
-	# please change paras according the command you launch minivtun
-	export net=10.7.0.1/24
-	export intf=mv0
-	
-	# enable FORWARD
-	sh server_up.sh
-	
-	# disable FORWARD
-	sh server_down.sh
+if your want to run as linux-client, do the same as linux-server but under linux-client folders.
 	
 Enjoy it!
 
@@ -67,7 +48,7 @@ Enjoy it!
 	make menuconfig
 	make package/minivtun-openwrt/compile V=99
 	
-### Configure
+### Configuration for Openwrt
 
 Change password or port
 
