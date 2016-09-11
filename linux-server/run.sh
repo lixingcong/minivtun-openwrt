@@ -28,7 +28,7 @@ if [ x$choose = "x1" ];then
 	fi
 	
 	minivtun -l $server:$server_port -a $local_addr -m $mtu -n $intf -p $pid_file -e $password -d && \
-	sh sever_up.sh
+	sh server_up.sh
 else
 	if [ ! -f $pid_file ];then
 		echo minivtun is not running yet
