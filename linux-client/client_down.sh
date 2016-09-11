@@ -17,4 +17,11 @@ ip route del 128/1
 # change to default DNS
 mv /tmp/resolv.conf.ShadowVPN_original /etc/resolv.conf
 
+# Remove route rules
+if [ -f /tmp/minivtun_routes ]; then
+	sed -e "s/^/route del /" /tmp/minivtun_routes | ip -batch -
+	echo "Route rules have been removed"
+	rm -rf /tmp/minivtun_routes
+fi
+
 echo $0 done

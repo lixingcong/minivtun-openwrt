@@ -7,6 +7,10 @@
 # Turn on IP forwarding
 sysctl -w net.ipv4.ip_forward=1
 
+# Get original gateway
+gateway=$(ip route show 0/0 | sed -e 's/.* via \([^ ]*\).*/\1/')
+suf="via $gateway"
+
 # Turn on NAT over VPN
 iptables -t nat -A POSTROUTING -o $intf -j MASQUERADE
 iptables -I FORWARD 1 -i $intf -m state --state RELATED,ESTABLISHED -j ACCEPT
@@ -22,5 +26,12 @@ ip route add 128/1 dev $intf
 # change DNS to 8.8.8.8
 cp /etc/resolv.conf /tmp/resolv.conf.ShadowVPN_original
 echo "nameserver 8.8.8.8" > /etc/resolv.conf
+
+# load China Route File
+if [ $isUseRouteFile = "True" ] && [ -f "$route_file" ];then
+	grep -E "^([0-9]{1,3}\.){3}[0-9]{1,3}" $route_file > /tmp/minivtun_routes
+	sed -e "s/^/route add /" -e "s/$/ $suf/" /tmp/minivtun_routes | ip -batch -
+	echo "Route rules have been loaded"
+fi
 
 echo $0 done

@@ -35,7 +35,7 @@ Run and listen(my script copied from shadowvpn, not offical)
 	# use bash to run, not sh
 	bash run.sh
 	
-if your want to run as ```linux-client```, do the same as ```linux-server``` but under linux-client folders.
+if your want to run as ```linux-client```, do the same as ```linux-server``` but under linux-client folders. You could turn the China-route mode on, just set ```isUseRouteFile``` to ```True```
 	
 Enjoy it!
 

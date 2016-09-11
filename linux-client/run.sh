@@ -10,6 +10,10 @@ export mtu=1300
 export intf=mv0
 export pid_file=/var/run/minivtun.pid
 
+# China Route Mode
+export isUseRouteFile=False
+export route_file=chinadns_chnroute.txt
+
 if [ $EUID -ne 0 ];then
 	echo "Please run as root"
 	exit 1
