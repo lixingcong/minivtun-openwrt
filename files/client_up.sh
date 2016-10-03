@@ -30,27 +30,30 @@ route_file=$(uci get minivtun.@minivtun[-1].route_file 2>/dev/null)
 uci set minivtun.@minivtun[-1].route_mode_save=$route_mode
 uci commit minivtun
 
-# Turn on NAT over VPN
-iptables -t nat -A POSTROUTING -o $intf -j MASQUERADE
-iptables -I FORWARD 1 -i $intf -m state --state RELATED,ESTABLISHED -j ACCEPT
-iptables -I FORWARD 1 -o $intf -j ACCEPT
-loger notice "Turn on NAT over $intf"
+# mode 3 is "no change for route"
+if [ "$route_mode" != 3 ]; then
+	# Turn on NAT over VPN
+	iptables -t nat -A POSTROUTING -o $intf -j MASQUERADE
+	iptables -I FORWARD 1 -i $intf -m state --state RELATED,ESTABLISHED -j ACCEPT
+	iptables -I FORWARD 1 -o $intf -j ACCEPT
+	loger notice "Turn on NAT over $intf"
 
-# Change routing table
-suf="dev $intf"
-ip route add $server via $gateway
-if [ "$route_mode" != 2 ]; then
-	ip route add 0.0.0.0/1 dev $intf
-	ip route add 128.0.0.0/1 dev $intf
-	loger notice "Default route changed to VPN tun"
-	suf="via $gateway"
-fi
+	# Change routing table
+	suf="dev $intf"
+	ip route add $server via $gateway
+	if [ "$route_mode" != 2 ]; then
+		ip route add 0.0.0.0/1 dev $intf
+		ip route add 128.0.0.0/1 dev $intf
+		loger notice "Default route changed to VPN tun"
+		suf="via $gateway"
+	fi
 
-# Load route rules
-if [ "$route_mode" != 0 -a -f "$route_file" ]; then
-	grep -E "^([0-9]{1,3}\.){3}[0-9]{1,3}" $route_file >/tmp/minivtun_routes
-	sed -e "s/^/route add /" -e "s/$/ $suf/" /tmp/minivtun_routes | ip -batch -
-	loger notice "Route rules have been loaded"
+	# Load route rules
+	if [ "$route_mode" != 0 -a -f "$route_file" ]; then
+		grep -E "^([0-9]{1,3}\.){3}[0-9]{1,3}" $route_file >/tmp/minivtun_routes
+		sed -e "s/^/route add /" -e "s/$/ $suf/" /tmp/minivtun_routes | ip -batch -
+		loger notice "Route rules have been loaded"
+	fi
 fi
 
 loger info "Script $0 completed"
