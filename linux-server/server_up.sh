@@ -12,7 +12,7 @@ sysctl -w net.ipv4.ip_forward=1
 if !(iptables-save -t nat | grep -q "minivtun"); then
   iptables -t nat -A POSTROUTING -s $local_addr ! -d $local_addr -m comment --comment "minivtun" -j MASQUERADE
 fi
-iptables -A FORWARD -s $local_addr -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -s $local_addr -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
 iptables -A FORWARD -d $local_addr -j ACCEPT
 
 # Turn on MSS fix (MSS = MTU - TCP header - IP header)

@@ -24,7 +24,7 @@ route_mode=$(uci get minivtun.@minivtun[-1].route_mode_save 2>/dev/null)
 if [ "$route_mode" != 3 ]; then
 	# Turn off NAT over VPN
 	iptables -t nat -D POSTROUTING -o $intf -j MASQUERADE
-	iptables -D FORWARD -i $intf -m state --state RELATED,ESTABLISHED -j ACCEPT
+	iptables -D FORWARD -i $intf -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
 	iptables -D FORWARD -o $intf -j ACCEPT
 	loger notice "Turn off NAT over $intf"
 

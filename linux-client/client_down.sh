@@ -6,7 +6,7 @@
 
 # turn off NAT over VPN
 iptables -t nat -D POSTROUTING -o $intf -j MASQUERADE
-iptables -D FORWARD -i $intf -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -D FORWARD -i $intf -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
 iptables -D FORWARD -o $intf -j ACCEPT
 
 # Restore routing table

@@ -13,7 +13,7 @@ suf="via $gateway"
 
 # Turn on NAT over VPN
 iptables -t nat -A POSTROUTING -o $intf -j MASQUERADE
-iptables -I FORWARD 1 -i $intf -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -I FORWARD 1 -i $intf -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
 iptables -I FORWARD 1 -o $intf -j ACCEPT
 
 # Direct route to VPN server's public IP via current gateway

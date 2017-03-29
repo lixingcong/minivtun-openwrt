@@ -7,7 +7,7 @@
 
 # Turn off NAT over VPN
 iptables -t nat -D POSTROUTING -s $local_addr ! -d $local_addr -m comment --comment "minivtun" -j MASQUERADE
-iptables -D FORWARD -s $local_addr -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -D FORWARD -s $local_addr -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
 iptables -D FORWARD -d $local_addr -j ACCEPT
 
 # Turn off MSS fix (MSS = MTU - TCP header - IP header)

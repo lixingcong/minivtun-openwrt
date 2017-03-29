@@ -34,7 +34,7 @@ uci commit minivtun
 if [ "$route_mode" != 3 ]; then
 	# Turn on NAT over VPN
 	iptables -t nat -A POSTROUTING -o $intf -j MASQUERADE
-	iptables -I FORWARD 1 -i $intf -m state --state RELATED,ESTABLISHED -j ACCEPT
+	iptables -I FORWARD 1 -i $intf -m state --state NEW,RELATED,ESTABLISHED -j ACCEPT
 	iptables -I FORWARD 1 -o $intf -j ACCEPT
 	loger notice "Turn on NAT over $intf"
 
