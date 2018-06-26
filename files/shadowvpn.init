@@ -48,7 +48,7 @@ stop() {
 	pidfile="/var/run/minivtun_$intf.pid"
 	if [ -f $pidfile ]; then
 		kill -9 `cat $pidfile`
-		if [ ! $? = "0" ]; then
+		if [ $? = "0" ]; then
 				rm  $pidfile
 				echo "stopped."
 				return 0
