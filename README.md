@@ -1,6 +1,6 @@
 ## minivtun-openwrt
 
-A fast secure and reliable VPN service in non-standard protocol for rapidly deploying VPN servers/clients or getting through firewall. Created by [@rssnsj](https://github.com/rssnsj). 
+A fast secure and reliable VPN service in non-standard protocol for rapidly deploying VPN servers/clients or getting through firewall. [minivtun](https://github.com/rssnsj/minivtun) was created by [@rssnsj](https://github.com/rssnsj). 
 
 It's a very simple point-to-point tunnel client/server. only less than 20kB size.
 
@@ -35,8 +35,6 @@ Run and listen(my script copied from shadowvpn, not offical)
 	# use bash to run, not sh
 	bash run.sh
 	
-if your want to run as ```linux-client```, do the same as ```linux-server``` but under linux-client folders. You could turn the China-route mode on, just set ```isUseRouteFile``` to ```True```
-	
 Enjoy it!
 
 ### Complie for Openwrt (Client-side)
@@ -60,22 +58,6 @@ Change password or port
 
 Restart service
 
-	/etc/init.d/minivtun restart
-	
-Use Chnroute.txt
-
-Same as ShadowVPN or Shadowsocks, the chnroute.txt is available for Chinese user to change route.
-
-Please visit  [openwrt-shadowvpn](https://github.com/aa65535/openwrt-shadowvpn) for more details on route-mode.
-
-	# update route file
-	wget -O- 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | awk -F\| '/CN\|ipv4/ { printf("%s/%d\n", $4, 32-log($5)/log(2)) }' > /tmp/chinadns_chnroute.txt
-	cp /tmp/chinadns_chnroute.txt /etc/
-	
-	vi /etc/config/minivtun
-	# set the route-mode to 1 (Domestic Mode)
-	# set route-file to /etc/chinadns_chnroute.txt
-	
 	/etc/init.d/minivtun restart
 
 ### Luci-app

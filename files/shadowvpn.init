@@ -11,6 +11,8 @@
 START=90
 STOP=15
 
+VBIN=/usr/sbin/minivtun
+
 start_vpn() {
 	local enable server port password net mtu keepalive intf pidfile
 	config_get_bool enable $1 enable
@@ -29,15 +31,9 @@ start_vpn() {
 	fi
 	
 	pidfile="/var/run/minivtun_$intf.pid"
-	/usr/sbin/minivtun -r "[$server]:$port" -a $net \
-	            -n $intf -e $password -d -m $mtu -k $keepalive \
-                -p $pidfile || return 1
+	args="-r [$server]:$port -n $intf -e $password -d -m $mtu -k $keepalive -p $pidfile"
 	
-	export net=$net
-	export server=$server
-	export intf=$intf
-	export pidfile=$pidfile
-	sh /etc/minivtun/client_up.sh
+	$VBIN $args -a $net || $VBIN $args -A $net || return 1
 }
 
 start() {
@@ -46,19 +42,13 @@ start() {
 }
 
 stop() {
-	local intf server pidfile net
+	local intf
 	intf=`uci get minivtun.@minivtun[0].intf 2>/dev/null`
-	server=`uci get minivtun.@minivtun[0].server 2>/dev/null`
-	net=`uci get minivtun.@minivtun[0].net 2>/dev/null`
+	
 	pidfile="/var/run/minivtun_$intf.pid"
 	if [ -f $pidfile ]; then
 		kill -9 `cat $pidfile`
-		if [ $? = "0" ]; then
-				export net=$net
-				export server=$server
-				export intf=$intf
-				export pidfile=$pidfile
-				sh /etc/minivtun/client_down.sh
+		if [ ! $? = "0" ]; then
 				rm  $pidfile
 				echo "stopped."
 				return 0
