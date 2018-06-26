@@ -1,20 +1,21 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=minivtun
-PKG_VERSION:=1.0
+PKG_VERSION:=1.0.1
 PKG_RELEASE:=1
 
-PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
-PKG_SOURCE_URL:=https://github.com/lixingcong/minivtun-openwrt/releases/download/v$(PKG_VERSION)
-PKG_MD5SUM:=f6946685916e2dd039e7d65708dcd8b0
+PKG_SOURCE_PROTO:=git
+PKG_SOURCE_URL:=https://github.com/rssnsj/minivtun.git
+PKG_SOURCE_VERSION:=53e5e4f1f45813f51839206df7dee4bda66c0bdb
+PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION)
+PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION).tar.xz
 
 PKG_LICENSE:=GPLv3
 PKG_LICENSE_FILES:=COPYING
 PKG_MAINTAINER:=lixingcong<lixingcong@live.com>
 
-PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)
-PKG_INSTALL:=1
-PKG_FIXUP:=autoreconf
+PKG_BUILD_DIR:=$(BUILD_DIR)/$(PKG_NAME)/$(BUILD_VARIANT)/$(PKG_NAME)-$(PKG_VERSION)-$(PKG_SOURCE_VERSION)
+
 PKG_USE_MIPS16:=0
 PKG_BUILD_PARALLEL:=1
 
@@ -31,6 +32,8 @@ endef
 define Package/minivtun/description
 A simple tun based on openssl
 endef
+
+MAKE_PATH:=src
 
 define Package/minivtun/install
 	$(INSTALL_DIR) $(1)/usr/sbin
