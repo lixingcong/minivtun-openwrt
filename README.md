@@ -62,7 +62,7 @@ Restart service
 
 ### Luci-app
 
-A luci-app-minivtun was available, please vist [openwrt-dist-luci](https://github.com/lixingcong/openwrt-dist-luci).
+A luci-app-minivtun was available: [luci-app-minivtun](https://github.com/lixingcong/luci-app-minivtun).
 
 ### Wiki
 

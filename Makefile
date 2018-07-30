@@ -2,7 +2,7 @@ include $(TOPDIR)/rules.mk
 
 PKG_NAME:=minivtun
 PKG_VERSION:=1.0.1
-PKG_RELEASE:=2
+PKG_RELEASE:=4
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/rssnsj/minivtun.git
@@ -37,14 +37,7 @@ MAKE_PATH:=src
 
 define Package/minivtun/install
 	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_DIR) $(1)/etc/config
-	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_DIR) $(1)/etc/hotplug.d/iface
-
 	$(INSTALL_BIN) $(PKG_BUILD_DIR)/src/minivtun $(1)/usr/sbin/
-	$(INSTALL_DATA) ./files/shadowvpn.config $(1)/etc/config/minivtun
-	$(INSTALL_BIN) ./files/shadowvpn.init $(1)/etc/init.d/minivtun
-	$(INSTALL_DATA) ./files/shadowvpn.hotplug $(1)/etc/hotplug.d/iface/30-minivtun
 endef
 
 
