@@ -6,8 +6,6 @@ It's a very simple point-to-point tunnel client/server. only less than 20kB size
 
 This repo is an unoffical port for openwrt, if you prefer the offical one, please visit [minivtun-tools](https://github.com/rssnsj/network-feeds/tree/master/minivtun-tools).
 
-The default route and init.d files was copied from [openwrt-shadowvpn](https://github.com/aa65535/openwrt-shadowvpn). I am so lazy!
-
 ### For Linux
 
 Show you the Offical compile guide below
@@ -48,17 +46,6 @@ Enjoy it!
 	# Select Network -> minivtun
 	make menuconfig
 	make package/minivtun-openwrt/compile V=99
-	
-### Configuration for Openwrt
-
-Change password or port
-
-	vi /etc/config/minivtun
-	# Switch: enable = 1 or 0
-
-Restart service
-
-	/etc/init.d/minivtun restart
 
 ### Luci-app
 
